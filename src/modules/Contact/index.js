@@ -8,21 +8,20 @@ class Home extends React.Component {
       <ContainerLayout>
         <ContainerHeader title="CONTACT US" />
         <div className="home">
-          <h2>Prahladbhai Ojha (President): 90990 25985</h2>
-          <h2>Keshavlal Prajapati (Minister): 90990 25985</h2>
+          <h2>રવિભાઈ રમણભાઈ પ્રજાપતિ(પ્રમુખ): 9924917390</h2>
+          <h2>અરવિંદભાઈ દેસાઈભાઈ પ્રજાપતિ(ખજાનજી): 90990 25985</h2>
+          <h2>પરેશભાઈ રમણભાઈ પ્રજાપતિતિ(સંગઠન મંત્રી): 9898007037</h2>
 
           <div>
-            <h2> Website Mobile App Developer Contact: -</h2>
+            <h2>વેબસાઇટ મોબાઇલ એપ્લિકેશન સંપર્ક: </h2>
             <h3>
               {" "}
-              In case of any technical error in the website or mobile
-              application, please contact Boney Prajapati at the following
-              details.
+              વેબસાઇટ અથવા મોબાઇલ એપ્લિકેશનમાં કોઈ તકનીકી ભૂલ હોવાના કિસ્સામાં,
+              નીચેની વિગતો પર કેતન પ્રજાપતિનો સંપર્ક કરો.
             </h3>
           </div>
           <h2>
-            Bonnie Prajapati Mobile Number: 90169 07846 E-mail:
-            bountybonny@gmail.com
+            કેતનભાઈ ઘનશ્યામભાઈ પ્રજાપતિ : 9924731218,ketanprajapati245@gmail.com
           </h2>
         </div>
       </ContainerLayout>
