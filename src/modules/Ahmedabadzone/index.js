@@ -3,47 +3,49 @@ import ContainerLayout from "globals/components/ContainerLayout";
 import { Button, Table, Collapse } from "antd";
 const { Panel } = Collapse;
 
+
+
 const columns = [
   {
     title: "પોતે",
-    dataIndex: "પોતે",
-    key: "પોતે",
+    dataIndex: "person_name",
+    key: "person_name",
     render: text => text
   },
   {
     title: "જન્મ તારીખ",
-    dataIndex: "જન્મ તારીખ",
-    key: "જન્મ તારીખ"
+    dataIndex: "dob",
+    key: "dob"
   },
   {
     title: "ભણતર",
-    dataIndex: "ભણતર",
-    key: "ભણતર"
+    dataIndex: "education",
+    key: "education"
   },
   {
     title: "લગ્ન સ્થિતિ",
-    dataIndex: "લગ્ન સ્થિતિ",
-    key: "લગ્ન સ્થિતિ"
+    dataIndex: "married_status",
+    key: "married_status"
   },
   {
     title: "સાસરી",
-    dataIndex: "સાસરી",
-    key: "સાસરી"
+    dataIndex: "wife_address",
+    key: "wife_address"
   },
   {
     title: "મોબાઇલ નં",
-    dataIndex: "મોબાઇલ નં",
-    key: "મોબાઇલ નં"
+    dataIndex: "mobile_number",
+    key: "mobile_number"
   },
   {
     title: "વ્ય નું સરનામું",
-    dataIndex: "વ્ય નું સરનામું",
-    key: "વ્ય નું સરનામું"
+    dataIndex: "office_address",
+    key: "office_address"
   },
   {
     title: "સરનામું",
-    dataIndex: "સરનામું",
-    key: "સરનામું"
+    dataIndex: "address",
+    key: "address"
   }
 ];
 const data = [
@@ -63,31 +65,89 @@ const data = [
 ];
 
 export default class Ahmedabadzone extends Component {
+  constructor() {
+    super();
+    this.state = {
+      cityList: [],
+      familyList: [],
+      familyDataList: [],
+      currenCity: {}
+    }
+  }
+  componentDidMount = () => {
+    this.callAllQuestionAPi()
+  }
+  callAllQuestionAPi = (values) => {
+    return fetch('http://localhost:4444/city/listAll', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        // console.log(",responseJson", responseJson)
+        this.setState({ cityList: responseJson })
+        return responseJson;
+      }).catch((error) => {
+        console.error(error);
+      });
+
+
+  }
+  getUseDetails(values, curren_City) {
+    this.setState({ currenCity: curren_City })
+    return fetch('http://localhost:4444/city/getFamilybyCity', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        console.log(",responseJson", responseJson)
+        this.setState({ familyList: responseJson })
+        return responseJson;
+      }).catch((error) => {
+        console.error(error);
+      });
+
+
+  }
+
+  getFamilyData(values) {
+    return fetch('http://localhost:4444/city/getUserbyCity', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        console.log(",responseJson", responseJson)
+        this.setState({ familyDataList: responseJson })
+        return responseJson;
+      }).catch((error) => {
+        console.error(error);
+      });
+
+  }
+
   render() {
+    const { cityList = [], familyList = [], familyDataList = [], currenCity = {} } = this.state;
     return (
       <ContainerLayout>
         <span>
-          <Button style={{ marginRight: 10, fontSize: 20 }} type="primary">
-            નારોલ
-          </Button>
-          <Button style={{ marginRight: 10, fontSize: 20 }} type="primary">
-            મેમનગર
-          </Button>
-          <Button style={{ marginRight: 10, fontSize: 20 }} type="primary">
-            ઇસનપુર
-          </Button>
-          <Button style={{ marginRight: 10, fontSize: 20 }} type="primary">
-            વટવા
-          </Button>
-          <Button style={{ marginRight: 10, fontSize: 20 }} type="primary">
-            નારણપુરા
-          </Button>
-          <Button style={{ marginRight: 10, fontSize: 20 }} type="primary">
-            ચાંદખેડા
-          </Button>
-          <Button style={{ marginRight: 10, fontSize: 20 }} type="primary">
-            લાંભા
-          </Button>
+          {cityList.map((city, index) =>
+            <Button key={index} style={{ marginRight: 10, fontSize: 20 }}
+              type="primary" onClick={() => this.getUseDetails({ city_id: city.city_id }, city)}>
+              {city.city_name}
+            </Button>)}
+
+
         </span>
         <div
           style={{
@@ -97,38 +157,29 @@ export default class Ahmedabadzone extends Component {
             marginTop: 10
           }}
         >
-          <h1 style={{ color: "red", fontSize: 35 }}>લાંભા</h1>
+          <h1 style={{ color: "red", fontSize: 35 }}>{currenCity.city_name}</h1>
         </div>
-        <div style={{ backgroundColor: "orange" }}>
+        {/* <div style={{ backgroundColor: "orange" }}>
           <Table
             columns={columns}
             dataSource={data}
             pagination={{ position: "none" }}
           />
-        </div>
+        </div> */}
         <div style={{ marginTop: 30 }}>
-          <Collapse accordion expandIconPosition={"right"}>
-            <Panel header="કેતનભાઈ ઘનશ્યામભાઈ પ્રજાપતિ" key="1">
-              <Table
-                columns={columns}
-                dataSource={data}
-                pagination={{ position: "none" }}
-              />
-            </Panel>
-            <Panel header="કેતનભાઈ ઘનશ્યામભાઈ પ્રજાપતિ" key="2">
-              <Table
-                columns={columns}
-                dataSource={data}
-                pagination={{ position: "none" }}
-              />
-            </Panel>
-            <Panel header="કેતનભાઈ ઘનશ્યામભાઈ પ્રજાપતિ" key="3">
-              <Table
-                columns={columns}
-                dataSource={data}
-                pagination={{ position: "none" }}
-              />
-            </Panel>
+          <Collapse accordion expandIconPosition={"right"} onChange={(key) => this.getFamilyData({ family_id: key })}>
+            {familyList.map((familyItem, index) =>
+              <Panel header={familyItem.family_name} key={familyItem.family_id} >
+                <div style={{ backgroundColor: "orange" }}>
+                  <Table
+                    columns={columns}
+                    dataSource={familyDataList}
+                    pagination={{ position: "none" }}
+                  />
+                </div>
+              </Panel>
+            )}
+
           </Collapse>
         </div>
       </ContainerLayout>
